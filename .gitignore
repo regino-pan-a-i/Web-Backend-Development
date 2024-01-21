@@ -14,3 +14,7 @@ node_modules
 
 # .DS_Store is only for Mac users
 **/.DS_Store
+
+# Ignore sandbox folder and everything in it
+sandbox
+sandbox/*
