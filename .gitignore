@@ -18,3 +18,7 @@ node_modules
 # Ignore sandbox folder and everything in it
 sandbox
 sandbox/*
+
+# debbuging config file
+.vscode
+.vscode/*
