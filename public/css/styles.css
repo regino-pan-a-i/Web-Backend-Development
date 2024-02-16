@@ -65,6 +65,11 @@ nav ul{
 nav li{
   padding: 2%;
 }
+nav a{
+  color: white;
+  text-decoration: none;
+
+}
 
 /* Hero */
 .hero {
@@ -152,6 +157,41 @@ nav li{
 .upgrade a{
   color: white;
 }
+
+#inv-display{
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  padding: 0;
+  margin: 0; 
+}
+
+#inv-display li {
+  margin: 0.5em; 
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  border-style: solid;
+  border-radius: 1em;
+  border-color: var(--secondary-color);
+  color: var(--comp-color-1);
+  max-width: 200px; 
+  flex: 1; 
+}
+
+#inv-display a {
+  color: var(--comp-color-1);
+  text-decoration: none;
+}
+
+#inv-display img {
+  max-width: 100%; 
+  height: auto; 
+}
+
 /* Footer */
 
 
