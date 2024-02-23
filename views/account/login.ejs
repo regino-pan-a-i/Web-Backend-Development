@@ -1,0 +1,21 @@
+<!-- Content Heading -->
+<% if (title) { %>
+    <h1><%- title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<!-- Login Form -->
+<div id = "form">
+    <form action = "/login"  method = "post">
+    <label for = "email">Email: </label>
+    <input type = "email" class  = "email" id = "email" name = "email" placeholder = "example@email.com" required>
+    <label for = "password">Password: </label>
+    <input type = "password" class = "password" id = "password" name = "password" placeholder = "******" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{12,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 12 or more characters">
+    <span id="pwordBtn">Show Password</span>
+    <input type = "submit" value = "Login" required >
+    </form>
+    <p>No account? <a href="/account/register">Sign-up</a></p>
+</div>

@@ -24,6 +24,7 @@ h1, h2, h3, h4, h5, h6{
   margin: 0.5em;
   font-family: 'Lobster', cursive;  
 }
+
 /* Header */
 header{
   display: flex;
@@ -236,6 +237,61 @@ nav a{
   list-style: none;
 }
 
+/* Login page */
+#form {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+}
+
+#form form {
+  display: flex;
+  flex-direction: column;
+}
+
+#form label {
+  margin-bottom: 5px;
+}
+
+#form input[type="email"], #form input[type="text"], #form input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#form input[type="submit"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: var(--comp-color-1);
+  color: white;
+  text-align: center;
+}
+#form p {
+  text-align: center;
+}
+
+#form a {
+  color: var(--contrast-color);
+}
+
+#pwordBtn{
+  width: fit-content;
+  margin: .5em;
+  padding: .5em;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: var(--comp-color-1);
+  color: white;
+  text-decoration: none;
+  text-align: center;
+
+}
 /* Footer */
 
 

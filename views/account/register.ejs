@@ -1,0 +1,27 @@
+<!-- Content Heading -->
+<% if (title) { %>
+    <h1><%- title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<!-- Register Form -->
+<div id = "form">
+    <h2>All Fields are required</h2>
+    <form action="/account/register" method="post">
+    <label for = "account_firstname">First Name: </label>
+    <input type = "text" class  = "fname" id = "fname" name = "account_firstname" placeholder = "John" required>
+    <label for = "account_lastname">Last Name: </label>
+    <input type = "text" class  = "lname" id = "lname" name = "account_lastname" placeholder = "Doe" required>
+    <label for = "account_email">Email Address: </label>
+    <input type = "email" class  = "email" id = "email" name = "account_email" placeholder = "example@email.com" required>
+    <label for = "account_password">Password: </label>
+    <input type = "password" class = "password" id = "password" name = "account_password" placeholder = "******" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{12,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 12 or more characters">
+    <span id="pwordBtn">Show Password</span>
+    <input type = "submit" value = "Register" >
+    </form>
+</div>
+
+<script ></script>
