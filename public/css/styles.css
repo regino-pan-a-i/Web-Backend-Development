@@ -272,6 +272,19 @@ nav a{
   color: white;
   text-align: center;
 }
+
+input:required:invalid, input:focus:invalid {
+  background-color: #fc7065;
+  background-image: url(/images/invalid.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+input:required:valid, input:focus:valid {
+  background-color: aquamarine;
+  background-image: url(/images/valid.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+}
 #form p {
   text-align: center;
 }
@@ -292,6 +305,7 @@ nav a{
   text-align: center;
 
 }
+
 /* Footer */
 
 

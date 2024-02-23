@@ -1,6 +1,6 @@
 pButton = document.getElementById('pwordBtn');
 pButton.addEventListener('click', function() {
-    var pword = document.getElementById('password');
+    var pword = document.getElementById('account_password');
     var type = pword.getAttribute('type');
     if (type === 'password') {
         pword.setAttribute('type', 'text');
