@@ -83,6 +83,25 @@ Util.buildDetails = async function(data){
 }
 
 
+Util.buildClassificationList = async function(classification_id = null){
+  let data = await invModel.getClassifications()
+  let classificationList = 
+    `<select name="classification_id"
+    id="classificationList">`
+
+  classificationList += "<option value=''>Select a Classification</option>"
+  data.rows.forEach(row => {
+    classificationList += "<option value='" + row.classification_id + "'"
+    if(
+      classification_id != null &&
+      row.classificaito_id == classification_id
+    ){
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+}
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

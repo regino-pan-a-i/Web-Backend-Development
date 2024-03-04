@@ -1,0 +1,24 @@
+<!-- 
+The view must:
+
+* The form must send all data through the appropriate router, where server-side validation middleware is present, then on to the inventory controller and then to a function within the inventory model for insertion to the database.
+* If the insertion works, the controller should create a new navigation bar (which shows the new classification) and render the management view, along with a success message. Note: if it works, the new classification should appear as a navigation item immediately, without a manual page refresh. However, if it fails, then the add classification view should be rendered with a clear failure message.
+Thoroughly test all operations for functionality! Make sure it works. -->
+
+
+<% if (title){ %>
+    <h1><%= title %></h1>
+<% } %>
+
+
+<% messages() %>
+
+<!-- Login Form -->
+<div id = "form">
+    <form action="/inv/add-classification" method="post">
+    <label for = "classification_id">Name: </label>
+    <input type = "text" class = "classification" id = "classification_id" name = "classification_id" placeholder = "New Classification" pattern = "^[a-zA-Z]*$" required>
+    <input type = "submit" value = "Add">
+    </form>
+    <p class = "*"> Classification names cannot contain spaces or special characters.</p>
+</div>

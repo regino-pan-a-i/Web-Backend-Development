@@ -25,5 +25,37 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+/* ***************************
+ * Get details for a single car
+ * ***************************/
 
-module.exports = {getClassifications, getInventoryByClassificationId};
+async function getDetails(car_id){
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+      JOIN public.classification AS c 
+      ON i.classification_id = c.classification_id 
+      WHERE i.inv_id = $1`,
+      [car_id]
+    )
+    return data.rows[0]
+  } catch (error) {
+    console.error("getDetails error " + error)
+  }
+}
+
+/* ***************************
+ * Add new classification
+ * ***************************/
+async function addClassification(classification_name){
+  try {
+    const data = await pool.query(
+      `INSERT INTO public.classification (classification_name) VALUES ($1)`,
+      [classification_name]
+    )}
+  catch(error){
+    console.error("addClassification error " + error)
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetails, addClassification};

@@ -306,6 +306,16 @@ input:required:focus:valid {
 
 }
 
+#invManagement li{
+  padding: .5em;
+  margin: 1em;
+}
+
+#invManagement a{
+  color: #1D1A05;
+
+}
+
 /* Footer */
 
 
