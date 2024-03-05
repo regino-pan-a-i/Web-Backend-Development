@@ -20,5 +20,15 @@ router.get("/add-classification", utilities.handleErrors(invController.buildAddC
 router.post(
     "/add-classification",
     utilities.handleErrors(invController.addClassification));
+    
+    // Route to add to inventory
+    router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+
+// Process the add classification form
+router.post(
+    "/add-inventory",
+    utilities.handleErrors(invController.addClassification));
+        
+        
 
 module.exports = router;

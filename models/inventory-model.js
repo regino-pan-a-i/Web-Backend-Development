@@ -49,8 +49,8 @@ async function getDetails(car_id){
  * ***************************/
 async function addClassification(classification_name){
   try {
-    const data = await pool.query(
-      `INSERT INTO public.classification (classification_name) VALUES ($1)`,
+    await pool.query(
+      `INSERT INTO classification (classification_name) VALUES ($1)`,
       [classification_name]
     )}
   catch(error){
@@ -58,4 +58,19 @@ async function addClassification(classification_name){
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetails, addClassification};
+/* ***************************
+ * Get All Classifications
+ * ***************************/
+
+async function getAllClassifications(){
+  try {
+    const data = await pool.query(
+      `SELECT * FROM classification`
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getAllClassifications error " + error)
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetails, addClassification, getAllClassifications};
