@@ -83,6 +83,29 @@ Util.buildDetails = async function(data){
 }
 
 
+// Util.buildClassificationList = async function(classifications){
+//   let data = await invModel.getAllClassifications()
+//   let classificationList = 
+//     `<select name="classification_id"
+//     id="classificationList">`
+
+//   classificationList += "<option value=''>Select a Classification</option>"
+//   data.rows.forEach(row => {
+//     classificationList += "<option value='" + row.classification_id + "'"
+//     if(
+//       classification_id != null &&
+//       row.classificaito_id == classification_id
+//     ){
+//       classificationList += " selected "
+//     }
+//     classificationList += ">" + row.classification_name + "</option>"
+//   })
+//   classificationList += "</select>"
+//   return classificationList
+// }
+
+
+
 Util.buildClassificationList = async function(){
   let data = await invModel.getAllClassifications()
   let classificationList = 
@@ -91,52 +114,19 @@ Util.buildClassificationList = async function(){
 
   classificationList += "<option value=''>Select a Classification</option>"
   data.forEach( classification =>{
-  
-  data.rows.forEach(row => {
-    classificationList += "<option value='" + row.classification_id + "'"
-    if(
-      classification_id != null &&
-      row.classificaito_id == classification_id
-    ){
-      classificationList += " selected "
-    }
-    classificationList += ">" + row.classification_name + "</option>"
+    classificationList += "<option value='" + classification.classification_id + "'"
+    // if(
+    //   classification_id != null &&
+    //   classification.classificaito_id == classification_id
+    // ){
+    //   classificationList += " selected "
+    // }
+    classificationList += ">" + classification.classification_name + "</option>"
   })
   classificationList += "</select>"
-  })
+  
+  // console.log(classificationList)
   return classificationList
-}
-
-
-Util.buildAddInventory = async function(req, res, next){
-  let form = `
-  <div id = "form">
-    <h2>All Fields are required</h2>
-    <form action = "" method = "post">
-    <label for = "classification">Classification: </label>`
-
-  form += this.buildClassificationList  
-  form += `</select>
-    <label for = "inv_make">Make: </label>
-    <input type = "text" class = "inv_make" id = "inv_make" name = "inv_make"  value="<%= locals.inv_make %>"required>
-    <label for = "inv_model">Model: </label>
-    <input type = "text" class = "inv_model" id = "inv_model" name = "inv_model"  value="<%= locals.inv_model %>"required>
-    <label for = "inv_year">Year: </label>
-    <input type = "number" class = "inv_year" id = "inv_year" name = "inv_year" min="1980" max="2025"  value="<%= locals.inv_year %>"required>
-    <label for = "inv_description">Description: </label>
-    <input type = "text" class = "inv_description" id = "inv_description" name = "inv_description"  value="<%= locals.inv_description %>">
-    <label for = "inv_price">Price: </label>
-    <input type = "number" class = "inv_price" id = "inv_price" name = "inv_price" max="100000"  value="<%= locals.inv_price %>"required>
-    <label for = "inv_miles">Miles: </label>
-    <input type = "number" class = "inv_miles" id = "inv_miles" name = "inv_miles" max="999999"  value="<%= locals.inv_miles %>"required>
-    <label for = "inv_color">Color: </label>
-    <input type = "text" class = "inv_color" id = "inv_color" name = "inv_color"  value="<%= locals.inv_color %>"required>
-    
-    <input type = "submit" value = "Add" >
-    </form>
-  </div>`
-
-  return form
 }
 
 /* ****************************************

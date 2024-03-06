@@ -3,7 +3,16 @@
 <% } %>
 
 
-<% messages() %>
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+  
 
 <!-- Login Form -->
 <div id = "form">
