@@ -18,7 +18,7 @@
 <div id = "form">
     <form action="/inv/add-classification" method="post">
     <label for = "classification_name">Name: </label>
-    <input type = "text" class = "classification" id = "classification_name" name = "classification_name" placeholder = "New Classification" pattern = "^[a-zA-Z]*$" required>
+    <input type = "text" class = "classification" id = "classification_name" name = "classification_name" placeholder = "New Classification" pattern = "^[a-zA-Z]*$" value="<%= locals.inv_price %>" required>
     <input type = "submit" value = "Add">
     </form>
     <p class = "*"> Classification names cannot contain spaces or special characters.</p>
