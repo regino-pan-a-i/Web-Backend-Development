@@ -108,10 +108,9 @@ invCont.addClassification = async function (req, res, next) {
 invCont.addInventory = async function (req, res, next) {
 
   const nav = await utilities.getNav()
-  const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id } = req.body
-  // console.log(req.body)
+  const { inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
   try {
-    await invModel.addInventory(inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id)
+    await invModel.addInventory(inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
     req.flash("message", 'Inventory added successfully.')
     res.status(200).render("inventory/management", {
       title: "Add Inventory",

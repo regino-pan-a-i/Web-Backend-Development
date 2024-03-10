@@ -316,6 +316,24 @@ input:required:focus:valid {
 
 }
 
+/* Flash messages */
+.message {
+  border: 1px solid #4CAF50; 
+  background-color: #DFF2BF;
+  color: #4CAF50;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+/* Error messages */
+.error-message,  .notice{
+  border: 1px solid #f44336; 
+  background-color: #FFD2D2;
+  color: #f44336;
+  margin-bottom: 15px;
+  padding: 15px;
+} 
+
 /* Footer */
 
 

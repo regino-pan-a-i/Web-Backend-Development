@@ -25,9 +25,9 @@ validate.addClassificationRules = () => {
 validate.addInventoryRules = () => {
   return [
     // valid classification id is required and must be integer
-    // body("classification")
-    //   .notEmpty()
-    //   .withMessage("Please select a classification."), // on error this message is sent.
+    body("classification_id")
+      .notEmpty()
+      .withMessage("Please select a classification."), // on error this message is sent.
 
     // valid make is required and must be string
     body("inv_make")
@@ -59,6 +59,18 @@ validate.addInventoryRules = () => {
       .withMessage("Please provide a description.") // on error this message is sent.
       .escape(),
 
+    body("inv_image")
+      .notEmpty()
+      .trim()
+      .isLength({ min: 1 })
+      .isURL()
+      .withMessage("Please provide an image URL."), // on error this message is sent.
+    body("inv_thumbnail")
+      .notEmpty()
+      .trim()
+      .isLength({ min: 1 })
+      .isURL()
+      .withMessage("Please provide a thumbnail URL."), // on error this message is sent.
     // valid price is required and must be positive integer
     body("inv_price")
       .notEmpty()
@@ -111,12 +123,13 @@ validate.checkNewClassification = async (req, res, next) => {
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkNewInventory = async (req, res, next) => {
-  const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id } = req.body
+  const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
   let errors = []
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
     let list = await utilities.buildClassificationList(classification_id);
+    console.log(errors)
     req.flash("notice", 'Sorry, there was an error adding the inventory.')
     res.render("inventory/add-inventory", {
       title: "Add Inventory",
@@ -127,6 +140,8 @@ validate.checkNewInventory = async (req, res, next) => {
       inv_model,
       inv_year,
       inv_description,
+      inv_image,
+      inv_thumbnail,
       inv_price,
       inv_miles,
       inv_color

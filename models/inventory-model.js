@@ -75,12 +75,20 @@ async function getAllClassifications(){
 /* ***************************
   * Add new inventory
   * ***************************/
-async function addInventory(inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id){
+async function addInventory(inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id){
+  // if (inv_thumbnail.includes('image')) {
+  //   inv_image = 'no-image-tn.png'
+  // }
+  // if (inv_image.includes('image')) {
+  //   inv_image = 'no-image.png'
+  // }
+
   try {
+    // console.log("let's prettend this is working");
     await pool.query(
-      `INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id, inv_image, inv_thumbnail) 
+      `INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-      [inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id,'/images/vehicles/no-image.png','/images/vehicles/no-image-tn.png']
+      [inv_make, inv_model, inv_year, inv_description,'images/vehicles/no-image.png', 'images/vehicles/no-image-tn.png', inv_price, inv_miles, inv_color, classification_id]
     )}
   catch(error){
     console.error("addInventory error " + error)

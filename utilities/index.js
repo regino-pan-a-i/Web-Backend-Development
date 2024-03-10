@@ -82,30 +82,6 @@ Util.buildDetails = async function(data){
 
 }
 
-
-// Util.buildClassificationList = async function(classifications){
-//   let data = await invModel.getAllClassifications()
-//   let classificationList = 
-//     `<select name="classification_id"
-//     id="classificationList">`
-
-//   classificationList += "<option value=''>Select a Classification</option>"
-//   data.rows.forEach(row => {
-//     classificationList += "<option value='" + row.classification_id + "'"
-//     if(
-//       classification_id != null &&
-//       row.classificaito_id == classification_id
-//     ){
-//       classificationList += " selected "
-//     }
-//     classificationList += ">" + row.classification_name + "</option>"
-//   })
-//   classificationList += "</select>"
-//   return classificationList
-// }
-
-
-
 Util.buildClassificationList = async function(classification_id){
   console.log(classification_id)
   let data = await invModel.getAllClassifications()
@@ -120,14 +96,12 @@ Util.buildClassificationList = async function(classification_id){
       classification_id != null &&
       classification.classification_id == classification_id
     ){
-      console.log('you made it this far')
       classificationList += " selected "
     }
     classificationList += ">" + classification.classification_name + "</option>"
   })
   classificationList += "</select>"
   
-  // console.log(classificationList)
   return classificationList
 }
 

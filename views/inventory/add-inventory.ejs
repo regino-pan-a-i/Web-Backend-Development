@@ -27,12 +27,12 @@
         <input type = "number" class = "inv_year" id = "inv_year" name = "inv_year" min="1980" max="2025"  value="<%= locals.inv_year %>"required>
         <label for = "inv_description">Description: </label>
         <input type = "text" class = "inv_description" id = "inv_description" name = "inv_description"  value="<%= locals.inv_description %>">
-        <label for ='inv_image'>
-        <input type="text" class = 'inv_image' id = 'inv_image' <%if (locals.inv_image) { %> value = '<%= locals.inv_image %>' <% } else { value = '/images/vehicles/no-image.png'} %> placeholder = "Image URL" required>
-        <label for ='inv_thumbnail'>
-        <input type="text" class = 'inv_thumbnail' id = 'inv_thumbnail' <%if (locals.inv_thumbnail) { %> value = '<%= locals.inv_thumbnail %>' <% } else { value = '/images/vehicles/no-image-tn.png'} %> placeholder = "Image URL" required>
+        <label for ='inv_image'> Image:</label>
+        <input type="text" class = 'inv_image' id = 'inv_image' <%if (locals.inv_image) { %> value = '<%= locals.inv_image %>' <% } else { value = '/images/vehicles/no-image.png'} %>  >
+        <label for ='inv_thumbnail'>Thumbnail: </label>
+        <input type="text" class = 'inv_thumbnail' id = 'inv_thumbnail' <%if (locals.inv_thumbnail) { %> value = '<%= locals.inv_thumbnail %>' <% } else { value = '/images/vehicles/no-image-tn.png'} %>  >
         <label for = "inv_price">Price: </label>
-        <input type = "number" class = "inv_price" id = "inv_price" name = "inv_price" max="100000"  value="<%= locals.inv_price %>"required>
+        <input type = "number" class = "inv_price" id = "inv_price" name = "inv_price" min="1" max="100000"  value="<%= locals.inv_price %>"required>
         <label for = "inv_miles">Miles: </label>
         <input type = "number" class = "inv_miles" id = "inv_miles" name = "inv_miles" min="1" max="999999"  value="<%= locals.inv_miles %>"required>
         <label for = "inv_color">Color: </label>
