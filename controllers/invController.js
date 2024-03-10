@@ -87,7 +87,7 @@ invCont.addClassification = async function (req, res, next) {
     await invModel.addClassification(classification_name)
     const nav = await utilities.getNav()
     req.flash("notice", 'Classification created successfully.')
-    res.status(200).render("inventory/add-classification", {
+    res.status(200).render("inventory/management", {
       title: "Add Classification",
       nav,
       errors: null,
@@ -108,18 +108,18 @@ invCont.addClassification = async function (req, res, next) {
 invCont.addInventory = async function (req, res, next) {
 
   const nav = await utilities.getNav()
-  const list = await utilities.buildClassificationList()
+  const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id } = req.body
+  // console.log(req.body)
   try {
-    const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id } = req.body
     await invModel.addInventory(inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id)
     req.flash("message", 'Inventory added successfully.')
-    res.status(200).render("inventory/add-inventory", {
+    res.status(200).render("inventory/management", {
       title: "Add Inventory",
       nav,
       errors: null,
-      list
     })
   } catch (error) {
+    const list = await utilities.buildClassificationList(classification_id)
     req.flash("notice", 'Sorry, there was an error adding the inventory.')
     res.status(501).render("inventory/add-inventory", {
       title: "Add Inventory",
@@ -129,4 +129,5 @@ invCont.addInventory = async function (req, res, next) {
     })
   }
 }
+
 module.exports = invCont

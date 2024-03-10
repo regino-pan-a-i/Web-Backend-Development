@@ -14,6 +14,7 @@ validate.addClassificationRules = () => {
     .trim()
     .isLength({ min: 1 })
     .isString()
+    .matches(/^[A-Za-z]\S*$/) // only letters and no spaces
     .withMessage("Please provide a classification name."), // on error this message is sent.
   ]
 }
@@ -23,22 +24,28 @@ validate.addClassificationRules = () => {
  * ********************************* */
 validate.addInventoryRules = () => {
   return [
+    // valid classification id is required and must be integer
+    // body("classification")
+    //   .notEmpty()
+    //   .withMessage("Please select a classification."), // on error this message is sent.
+
     // valid make is required and must be string
     body("inv_make")
       .trim()
-      .isLength({ min: 1 })
+      .notEmpty()
       .isString()
       .withMessage("Please provide a make."), // on error this message is sent.
     
     // valid model is required and must be string
     body("inv_model")
       .trim()
-      .isLength({ min: 1 })
+      .notEmpty()
       .isString()
       .withMessage("Please provide a model."), // on error this message is sent.
 
     // valid year is required and must be string
     body("inv_year")
+      .notEmpty()
       .isLength({ min: 1 })
       .isInt({ min:1980, max:2025})
       .withMessage("Please provide a year."), // on error this message is sent.
@@ -46,13 +53,15 @@ validate.addInventoryRules = () => {
     // valid description is required and must not have special characters
     body("inv_description")
       .trim()
-      .isLength({ min: 1 })
+      .notEmpty()
       .isString()
-      .matches(/^[A-Za-z\s]+$/) // only letters and spaces
-      .withMessage("Please provide a description."), // on error this message is sent.
-    
+      .matches(/^[A-Za-z\s]+/) // only letters and spaces
+      .withMessage("Please provide a description.") // on error this message is sent.
+      .escape(),
+
     // valid price is required and must be positive integer
     body("inv_price")
+      .notEmpty()
       .trim()
       .isLength({ min: 1 })
       .isInt({ min: 1 })
@@ -60,6 +69,7 @@ validate.addInventoryRules = () => {
     
     // valid miles is required and must be positive integer
     body("inv_miles")
+      .notEmpty()
       .trim()
       .isLength({ min: 1 })
       .isInt({ min: 1 })
@@ -67,6 +77,7 @@ validate.addInventoryRules = () => {
 
     // valid color is required and must be string
     body("inv_color")
+      .notEmpty()
       .trim()
       .isLength({ min: 1 })
       .isString()
@@ -100,29 +111,29 @@ validate.checkNewClassification = async (req, res, next) => {
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkNewInventory = async (req, res, next) => {
-    const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color } = req.body
-    let errors = []
-    errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      let nav = await utilities.getNav()
-      let list = await utilities.buildClassificationList();
-
-      res.render("inventory/add-inventory", {
-        errors,
-        title: "Add Inventory",
-        nav,
-        list,
-        inv_make,
-        inv_model,
-        inv_year,
-        inv_description,
-        inv_price,
-        inv_miles,
-        inv_color
-      })
-      return
-    }
-    next()
+  const { inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    let list = await utilities.buildClassificationList(classification_id);
+    req.flash("notice", 'Sorry, there was an error adding the inventory.')
+    res.render("inventory/add-inventory", {
+      title: "Add Inventory",
+      errors,
+      nav,
+      list,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_price,
+      inv_miles,
+      inv_color
+    })
+    return
+  }
+  next()
 }
 
 module.exports = validate

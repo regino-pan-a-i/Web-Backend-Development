@@ -80,7 +80,7 @@ async function addInventory(inv_make, inv_model, inv_year, inv_description, inv_
     await pool.query(
       `INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id, inv_image, inv_thumbnail) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-      [inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id]
+      [inv_make, inv_model, inv_year, inv_description, inv_price, inv_miles, inv_color, classification_id,'/images/vehicles/no-image.png','/images/vehicles/no-image-tn.png']
     )}
   catch(error){
     console.error("addInventory error " + error)

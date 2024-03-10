@@ -106,21 +106,23 @@ Util.buildDetails = async function(data){
 
 
 
-Util.buildClassificationList = async function(){
+Util.buildClassificationList = async function(classification_id){
+  console.log(classification_id)
   let data = await invModel.getAllClassifications()
   let classificationList = 
-    `<select name="classification_id"
-    id="classificationList">`
+    `<label for = "classification_id">Classification: </label>
+    <select name="classification_id" id="classification_id" required>`
 
   classificationList += "<option value=''>Select a Classification</option>"
   data.forEach( classification =>{
     classificationList += "<option value='" + classification.classification_id + "'"
-    // if(
-    //   classification_id != null &&
-    //   classification.classificaito_id == classification_id
-    // ){
-    //   classificationList += " selected "
-    // }
+    if(
+      classification_id != null &&
+      classification.classification_id == classification_id
+    ){
+      console.log('you made it this far')
+      classificationList += " selected "
+    }
     classificationList += ">" + classification.classification_name + "</option>"
   })
   classificationList += "</select>"
