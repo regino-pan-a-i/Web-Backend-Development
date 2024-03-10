@@ -63,13 +63,11 @@ validate.addInventoryRules = () => {
       .notEmpty()
       .trim()
       .isLength({ min: 1 })
-      .isURL()
       .withMessage("Please provide an image URL."), // on error this message is sent.
     body("inv_thumbnail")
       .notEmpty()
       .trim()
       .isLength({ min: 1 })
-      .isURL()
       .withMessage("Please provide a thumbnail URL."), // on error this message is sent.
     // valid price is required and must be positive integer
     body("inv_price")
