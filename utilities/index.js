@@ -88,7 +88,6 @@ Util.buildDetails = async function(data){
  * Build the dropdown classification list
  * ************************************ */
 Util.buildClassificationList = async function(classification_id){
-  console.log(classification_id)
   let data = await invModel.getAllClassifications()
   let classificationList = 
     `<label for = "classification_id">Classification: </label>
@@ -140,6 +139,31 @@ Util.checkJWTToken = (req, res, next) => {
    next()
   }
 }
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
+ 
+ 
+ /* ****************************************
+  *  Check Account Type
+  * ************************************ */
+ Util.checkAccount = (req, res, next) => {
+   if (res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin") {
+     next()
+   } else {
+     req.flash("notice", "You do not have the necessary permissions, please log in.")
+     return res.redirect("/account/login")
+   }
+  }
 
 
 module.exports = Util

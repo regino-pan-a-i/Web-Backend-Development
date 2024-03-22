@@ -13,9 +13,11 @@
     <label for = "account_email">Email: </label>
     <input type = "account_email" class  = "account_email" id = "account_email" name = "account_email" placeholder = "example@email.com" required>
     <label for = "account_password">Password: </label>
-    <input type = "account_password" class = "account_password" id = "account_password" name = "account_password" placeholder = "******" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{12,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 12 or more characters">
+    <input type = "password" class = "account_password" id = "account_password" name = "account_password" placeholder = "******" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{12,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 12 or more characters">
     <span id="pwordBtn">Show Password</span>
     <input type = "submit" value = "Login">
     </form>
     <p>No account? <a href="/account/register">Sign-up</a></p>
 </div>
+
+<script src="/js/script.js" defer></script>

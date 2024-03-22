@@ -97,7 +97,11 @@ accountController.registerAccount = async function(req, res) {
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       delete accountData.account_password
       const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+      if(process.env.NODE_ENV === 'development'){
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+      } else {
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000, secure: true })
+      }
       return res.redirect("/account/")
     }
   } catch (error) {
@@ -105,14 +109,82 @@ accountController.registerAccount = async function(req, res) {
   }
 }
 
+/* ****************************************
+ *  Build account managment view
+ * ************************************ */
 accountController.buildLandingPage = async function (req, res) {
   let nav = await utilities.getNav()
-  console.log('You made it this far')
   res.render("account/landing-page", {
-    title: "Account",
+    title: "You are logged in",
     nav,
   })
 }
 
+/* ****************************************
+ *  Build profile information view view
+ * ************************************ */
+accountController.buildProfile = async function (req, res) {
+  let nav = await utilities.getNav()
+  let firstName = res.locals.accountData.account_firstname 
+  let lastName = res.locals.accountData.account_lastname 
+  let email = res.locals.accountData.account_email 
+  res.render("account/profile", {
+    title: "Profile",
+    nav,
+    errors: null,
+    firstName,
+    lastName,
+    email,
+  })
+}
+
+
+/* ****************************************
+*  Update Account
+* *************************************** */
+accountController.updateProfile = async function(req, res) {
+  let nav = await utilities.getNav()
+  const { account_firstname, account_lastname, account_email, account_id} = req.body
+
+  const updateResult = await accountModel.updateAccount(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id
+  )
+  if (updateResult) {
+    delete updateResult.account_password
+    const accessToken = jwt.sign(updateResult, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+    res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+    let firstName = updateResult.account_firstname 
+    let lastName = updateResult.account_lastname 
+    let email = updateResult.account_email 
+    req.flash(
+      "message",
+      `Your information was updated sucessfully.`
+    )
+    res.status(201).render("account/landing-page", {
+      title: "You are logged in",
+      nav,
+      errors : null,
+      firstName,
+      lastName,
+      email,
+    })
+  } else {
+    req.flash("notice", "Sorry, the update process failed.")
+    let firstName = account_firstname 
+    let lastName = account_lastname
+    let email = account_email
+    res.status(501).render("account/profile", {
+      title: "Profile",
+      nav,
+      errors: null,
+      firstName,
+      lastName,
+      email,
+    })
+  }
+}
 
 module.exports = accountController

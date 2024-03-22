@@ -12,10 +12,10 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:car_id", utilities.handleErrors(invController.buildDetails));
 
 // Route to build inventory manager view
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get("/", utilities.checkLogin, utilities.checkAccount, utilities.handleErrors(invController.buildManagement));
 
 // Route to add Classifications
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
+router.get("/add-classification", utilities.checkLogin, utilities.checkAccount, utilities.handleErrors(invController.buildAddClassification));
 
 // Process the add classification form
 router.post(
@@ -26,7 +26,7 @@ router.post(
 );
     
 // Route to add to inventory
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+router.get("/add-inventory", utilities.checkLogin, utilities.checkAccount, utilities.handleErrors(invController.buildAddInventory));
 
 // Process the add classification form
 router.post(
@@ -35,6 +35,27 @@ router.post(
     invValidate.checkNewInventory,
     utilities.handleErrors(invController.addInventory)
 );
-   
+
+// Router to get Inventory
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+
+// Route to build the edit view
+router.get("/edit/:inv_id",utilities.checkLogin, utilities.checkAccount, utilities.handleErrors(invController.buildEdit));
+
+// Route to process the edit form
+router.post("/update/", 
+    invValidate.addInventoryRules(),
+    invValidate.checkUpdateData,
+    utilities.handleErrors(invController.updateInventory)
+);
+
+
+// Route to delete inventory
+router.get("/delete/:inv_id",utilities.checkLogin, utilities.checkAccount, utilities.handleErrors(invController.deleteConfirmation));
+
+
+// Route to process the delete
+router.post("/delete/", utilities.handleErrors(invController.deleteInventory));
 
 module.exports = router;

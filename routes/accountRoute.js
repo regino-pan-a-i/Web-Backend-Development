@@ -32,8 +32,26 @@ router.post(
 )
   
 // Route to build account landing page view
-router.get("/", utilities.handleErrors(accountController.buildLandingPage));
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildLandingPage));
 
+// Route to build account info page
+router.get("/profile", utilities.checkLogin, utilities.handleErrors(accountController.buildProfile));
+
+// Process the Data update
+router.post("/profile/update", 
+  utilities.checkLogin, 
+  regValidate.updateDataRules(),
+  regValidate.checkUpdatedData,
+  utilities.handleErrors(accountController.updateProfile)
+);
+
+// Process the Password update
+router.post("/password-update", 
+  utilities.checkLogin, 
+  regValidate.updatePasswordRules(),
+  regValidate.checkUpdatedData,
+  utilities.handleErrors(accountController.updateProfile)
+);
 
 
 module.exports = router;

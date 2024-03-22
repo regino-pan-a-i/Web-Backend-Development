@@ -87,7 +87,7 @@ validate.addInventoryRules = () => {
 
 
 /* ******************************
- * Check data and return errors or continue to registration
+ * Check data and return errors or continue to adding new items
  * ***************************** */
 validate.checkNewClassification = async (req, res, next) => {
     const { classification_name } = req.body
@@ -133,6 +133,39 @@ validate.checkNewInventory = async (req, res, next) => {
       inv_price,
       inv_miles,
       inv_color
+    })
+    return
+  }
+  next()
+}
+
+/* ******************************
+ * Check data and return errors or update inventory
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, inv_id, classification_id } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    let list = await utilities.buildClassificationList(classification_id);
+    console.log(errors)
+    req.flash("notice", 'Sorry, there was an error updating the inventory.')
+    res.render("inventory/edit", {
+      title: "Edit " + `${inv_make} ${inv_model}`,
+      errors,
+      nav,
+      list,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color, 
+      inv_id,
     })
     return
   }

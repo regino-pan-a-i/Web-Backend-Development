@@ -44,8 +44,15 @@ header{
   color: var(--contrast-color);
 }
 
+#tools{
+  width: 15em;
+  text-align: right;
+}
+
 #tools a{
   color: var(--contrast-color);
+  font-size: medium;
+  padding: .5%;
   text-decoration: none;
 }
 
@@ -240,7 +247,7 @@ nav a{
 /* Login page */
 #form {
   width: 300px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -273,15 +280,13 @@ nav a{
   text-align: center;
 }
 
-input:required:focus:invalid {
+input:required:focus:invalid{
   background-color: #fc7065;
-  background-image: url(/images/invalid.png);
   background-position: right top;
   background-repeat: no-repeat;
 }
 input:required:focus:valid {
   background-color: aquamarine;
-  background-image: url(/images/valid.png);
   background-position: right top;
   background-repeat: no-repeat;
 }
@@ -333,6 +338,45 @@ input:required:focus:valid {
   margin-bottom: 15px;
   padding: 15px;
 } 
+
+:disabled {
+  background: #a00;
+  color: white
+}
+
+/* Style the table */
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style the table header */
+#inventoryDisplay th {
+  background-color: var(--comp-color-1);
+  color: white;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Style the table cells */
+#inventoryDisplay td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* Style the table rows */
+#inventoryDisplay tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+
+/* Style the update information form */
+
+#profileInfo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 /* Footer */
 
@@ -420,4 +464,11 @@ input:required:focus:valid {
     max-width: 1500px;
     flex-direction: row;
   }  
+
+  #profileInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
