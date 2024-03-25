@@ -158,6 +158,7 @@ validate.updateDataRules = () => {
  *  Password Update  Validation Rules
  * ********************************* */
 validate.updatePasswordRules = () => {
+  console.log('you made it to the password rules')
   return [
     // password is required and must be strong password
     body("account_password")
@@ -198,6 +199,34 @@ validate.checkUpdatedData = async (req, res, next) => {
   }
   next()
 }
+
+/* ******************************
+ * Check updated password and return errors or continue 
+ * ***************************** */
+validate.checkUpdatedPassword = async (req, res, next) => {
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    // console.log(errors)
+    let nav = await utilities.getNav()
+    let firstName = res.locals.accountData.account_firstname
+    let lastName = res.locals.accountData.account_lastname
+    let email = res.locals.accountData.account_email
+    let account_password = req.body.account_password
+    res.render("account/profile", {
+      errors,
+      title: "Profile",
+      nav,
+      firstName,
+      lastName,
+      email,
+      account_password
+    })
+    return
+  }
+  next()
+}
+
 
 
 module.exports = validate

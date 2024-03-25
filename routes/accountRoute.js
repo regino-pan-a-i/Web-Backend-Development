@@ -46,13 +46,15 @@ router.post("/profile/update",
 );
 
 // Process the Password update
-router.post("/password-update", 
+router.post("/password/update", 
   utilities.checkLogin, 
   regValidate.updatePasswordRules(),
-  regValidate.checkUpdatedData,
-  utilities.handleErrors(accountController.updateProfile)
+  regValidate.checkUpdatedPassword,
+  utilities.handleErrors(accountController.updatePassword)
 );
 
+// Route to build account logout
+router.get("/logout", utilities.handleErrors(accountController.accountLogout));
 
 module.exports = router;
   

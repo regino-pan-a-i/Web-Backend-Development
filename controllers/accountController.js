@@ -157,8 +157,7 @@ accountController.updateProfile = async function(req, res) {
     const accessToken = jwt.sign(updateResult, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
     let firstName = updateResult.account_firstname 
-    let lastName = updateResult.account_lastname 
-    let email = updateResult.account_email 
+
     req.flash(
       "message",
       `Your information was updated sucessfully.`
@@ -168,8 +167,7 @@ accountController.updateProfile = async function(req, res) {
       nav,
       errors : null,
       firstName,
-      lastName,
-      email,
+
     })
   } else {
     req.flash("notice", "Sorry, the update process failed.")
@@ -185,6 +183,75 @@ accountController.updateProfile = async function(req, res) {
       email,
     })
   }
+}
+
+
+/* ****************************************
+*  Update Password
+* *************************************** */
+accountController.updatePassword = async function(req, res) {
+  console.log("updatePassword")
+  let nav = await utilities.getNav()
+  const { account_password, account_id} = req.body
+  let firstName = res.locals.accountData.account_firstname 
+  let lastName = res.locals.accountData.account_lastname
+  let email = res.locals.accountData.account_email
+
+  // Hash the password before storing
+  let hashedPassword
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the registration.')
+    res.status(500).render("account/profile", {
+      title: "Profile",
+      nav,
+      errors: null,
+      firstName,
+      lastName,
+      email,
+    })
+  }
+  const updateResult = await accountModel.updatePassword(
+    hashedPassword,
+    account_id
+  )
+  if (updateResult && updateResult.account_password === hashedPassword) {
+    delete updateResult.account_password
+
+    req.flash(
+      "message",
+      `Your password was updated sucessfully.`
+    )
+    res.status(201).render("account/landing-page", {
+      title: "You are logged in",
+      nav,
+      errors : null,
+      firstName,
+    })
+  } else {
+    req.flash("notice", "Sorry, the update process failed.")
+    
+    res.status(501).render("account/profile", {
+      title: "Profile",
+      nav,
+      errors: null,
+      firstName,
+      lastName,
+      email,
+      account_password
+    })
+  }
+}
+
+/* ****************************************
+*  Logout
+* *************************************** */
+accountController.accountLogout = async function (req, res) {
+  res.clearCookie("jwt")
+  req.flash("message", "You have been logged out.")
+  res.redirect("/")
 }
 
 module.exports = accountController

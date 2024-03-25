@@ -70,9 +70,10 @@ nav ul{
   margin: 2%;
   padding: 0%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   list-style: none;  
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
 }
 nav li{
   padding: 2%;
@@ -407,6 +408,7 @@ input:required:focus:valid {
 
   nav ul {
     margin: .5%;
+    flex-direction: row;
   }
 
   nav li :hover {
