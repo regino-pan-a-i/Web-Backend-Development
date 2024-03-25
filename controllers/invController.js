@@ -83,6 +83,8 @@ invCont.buildAddInventory = async function (req, res, next) {
 invCont.addClassification = async function (req, res, next) {
   try{
     const classification_name = req.body.classification_name
+    const classificationSelect = await utilities.buildClassificationList()
+
     await invModel.addClassification(classification_name)
     const nav = await utilities.getNav()
     req.flash("notice", 'Classification created successfully.')
@@ -90,6 +92,7 @@ invCont.addClassification = async function (req, res, next) {
       title: "Add Classification",
       nav,
       errors: null,
+      classificationSelect
     })
   } catch (error) {
     req.flash("notice", 'Sorry, there was an error adding the classification.')
@@ -110,11 +113,14 @@ invCont.addInventory = async function (req, res, next) {
   const { inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
   try {
     await invModel.addInventory(inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
+    const classificationSelect = await utilities.buildClassificationList()
+
     req.flash("message", 'Inventory added successfully.')
     res.status(200).render("inventory/management", {
       title: "Add Inventory",
       nav,
       errors: null,
+      classificationSelect
     })
   } catch (error) {
     const list = await utilities.buildClassificationList(classification_id)
