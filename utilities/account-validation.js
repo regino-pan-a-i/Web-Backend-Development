@@ -158,7 +158,7 @@ validate.updateDataRules = () => {
  *  Password Update  Validation Rules
  * ********************************* */
 validate.updatePasswordRules = () => {
-  console.log('you made it to the password rules')
+  // console.log('you made it to the password rules')
   return [
     // password is required and must be strong password
     body("account_password")
