@@ -311,13 +311,27 @@ input:required:focus:valid {
   text-align: center;
 
 }
+#invManagementContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  
+}
+.management{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  min-width: 300px;
+}
 
-#invManagement li{
+.management li{
   padding: .5em;
   margin: 1em;
 }
 
-#invManagement a{
+.management a{
   color: #1D1A05;
 
 }
@@ -327,6 +341,14 @@ input:required:focus:valid {
   border: 1px solid #4CAF50; 
   background-color: #DFF2BF;
   color: #4CAF50;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.warning {
+  border: 1px solid #FFA500; 
+  background-color: #FFFAE6; 
+  color: black;
   margin-bottom: 15px;
   padding: 15px;
 }
@@ -346,13 +368,13 @@ input:required:focus:valid {
 }
 
 /* Style the table */
-#inventoryDisplay {
+.displayTable {
   width: 100%;
   border-collapse: collapse;
 }
 
 /* Style the table header */
-#inventoryDisplay th {
+.displayTable th {
   background-color: var(--comp-color-1);
   color: white;
   text-align: left;
@@ -360,13 +382,13 @@ input:required:focus:valid {
 }
 
 /* Style the table cells */
-#inventoryDisplay td {
+.displayTable td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
 /* Style the table rows */
-#inventoryDisplay tr:nth-child(even) {
+.displayTable tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -380,7 +402,10 @@ input:required:focus:valid {
 }
 
 /* Footer */
-
+footer{
+  position: relative;
+  bottom: 0;
+}
 
 @media only screen and (min-width: 600px) {
   html{
@@ -435,6 +460,11 @@ input:required:focus:valid {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
+  }
+
+  #invManagementContent {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   #reviewsContainer {
     flex: 1; /* Take up remaining space */

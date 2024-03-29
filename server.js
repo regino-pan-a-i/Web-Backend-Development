@@ -13,7 +13,6 @@ const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
-const testRoute = require("./routes/testRoute")
 const accountRoute = require("./routes/accountRoute")
 const bodyParser = require("body-parser")
 const session = require("express-session")
@@ -73,8 +72,6 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", utilities.handleErrors(inventoryRoute))
 
-// Error Route
-app.use("/test", utilities.handleErrors(testRoute))
 
 // Account Route
 app.use("/account", utilities.handleErrors(accountRoute))

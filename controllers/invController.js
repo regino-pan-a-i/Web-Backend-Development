@@ -37,6 +37,13 @@ invCont.buildDetails = async function (req, res, next) {
 }
 
 /* ***************************
+* Create an Error 
+* ***************************/
+invCont.throwError = async function (req, res, next) {
+  throw {message: "This is a test error", status: 500};
+}
+
+/* ***************************
 * Build Management view
 * ***************************/
 invCont.buildManagement = async function (reg, res, next) {
@@ -55,6 +62,7 @@ invCont.buildManagement = async function (reg, res, next) {
 * ***************************/
 invCont.buildAddClassification = async function (req, res, next) {
   let nav = await utilities.getNav();
+  req.flash("warning", 'The classification will need to be approved by admin')
   res.render("./inventory/add-classification", {
     title: "Add Classification",
     nav,
@@ -68,6 +76,7 @@ invCont.buildAddClassification = async function (req, res, next) {
 invCont.buildAddInventory = async function (req, res, next) {
   let nav = await utilities.getNav();
   const list = await utilities.buildClassificationList()
+  req.flash("warning", 'The classification will need to be approved by admin')
   res.render("./inventory/add-inventory", {
     title: "Add a new car to our inventory",
     nav,
@@ -87,9 +96,9 @@ invCont.addClassification = async function (req, res, next) {
 
     await invModel.addClassification(classification_name)
     const nav = await utilities.getNav()
-    req.flash("notice", 'Classification created successfully.')
+    req.flash("message", 'Classification created successfully. Waiting for approval from Admin')
     res.status(200).render("inventory/management", {
-      title: "Add Classification",
+      title: "Inventory Management",
       nav,
       errors: null,
       classificationSelect
@@ -114,10 +123,9 @@ invCont.addInventory = async function (req, res, next) {
   try {
     await invModel.addInventory(inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
     const classificationSelect = await utilities.buildClassificationList()
-
-    req.flash("message", 'Inventory added successfully.')
+    req.flash("message", 'Inventory added successfully. Waiting for approval from Admin')
     res.status(200).render("inventory/management", {
-      title: "Add Inventory",
+      title: "Inventory Management",
       nav,
       errors: null,
       classificationSelect
@@ -185,8 +193,7 @@ invCont.updateInventory = async function (req, res, next) {
   
   const nav = await utilities.getNav()
   const { inv_id, inv_make, inv_model, inv_year, inv_description,inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
-  // console.log(inv_image)
-  // console.log(inv_thumbnail)
+
   const updateResult = await invModel.updateInventory(
     inv_id,  
     inv_make,
@@ -202,8 +209,16 @@ invCont.updateInventory = async function (req, res, next) {
     )
   if (updateResult){
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
+    let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList()
     req.flash("message", `The ${itemName} has been updated.`)
-    res.redirect("/inv/")
+    res.status(200).render("inventory/management", {
+      title: "Inventory Management",
+      nav,
+      errors: null,
+      classificationSelect,
+
+    })
   } else {
     const classificationSelect = await utilities.buildClassificationList(classification_id)
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
@@ -261,9 +276,16 @@ invCont.deleteInventory = async function (req, res, next) {
   const deleteResult = await invModel.deleteInventory(inv_id)
  
   if (deleteResult){
+    const classificationSelect = await utilities.buildClassificationList()
+    const nav = await utilities.getNav()
     const itemName = req.body.inv_make + " " + req.body.inv_model
     req.flash("message", `The ${itemName} has been deleted.`)
-    res.redirect("/inv/")
+    res.status(200).render("inventory/management", {
+      title: "Inventory Management",
+      nav,
+      errors: null,
+      classificationSelect,
+    })
   } else {
     const itemName = req.body.inv_make + " " + req.body.inv_model
     req.flash("notice", 'Sorry, there was an error deleting the inventory.')
@@ -281,7 +303,50 @@ invCont.deleteInventory = async function (req, res, next) {
     
 }
 
+/******************************
+ * Build the approval view
+ ******************************/
+invCont.buildApproval = async function(req, res, next){
+  let nav = await utilities.getNav();
+  const classificationList = await utilities.buildApproveClassList()
+  const inventoryList = await utilities.buildApproveInvList()
+  res.render("./inventory/pending-approval", {
+    title: "Pending Approval", 
+    nav,
+    classificationList,
+    inventoryList
+  });
+}
+
+/******************************
+ * Build the approval view
+ ******************************/
+invCont.approveInventory = async function(req, res, next){
+  const inv_id = parseInt(req.params.inv_id)
+  const result = await invModel.approveInventory(inv_id, res.locals.accountData.account_id)
+  if (result){
+    req.flash("message", "The inventory has been approved.")
+    res.redirect("/inv/pending")
+  } else {
+    req.flash("notice", "Sorry, there was an error approving the inventory.")
+    res.redirect("/inv/pending")
+  }
+}
 
 
+/******************************
+ * Build the approval view
+ ******************************/
+invCont.approveClassification = async function(req, res, next){
+  const classification_inv = parseInt(req.params.classification_id)
+  const result = await invModel.approveClassification(classification_inv, res.locals.accountData.account_id)
+  if (result){
+    req.flash("message", "The inventory has been approved.")
+    res.redirect("/inv/pending")
+  } else {
+    req.flash("notice", "Sorry, there was an error approving the inventory.")
+    res.redirect("/inv/pending")
+  }
+}
 module.exports = invCont
   

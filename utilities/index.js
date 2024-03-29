@@ -153,17 +153,76 @@ Util.checkLogin = (req, res, next) => {
  }
  
  
- /* ****************************************
-  *  Check Account Type
-  * ************************************ */
- Util.checkAccount = (req, res, next) => {
-   if (res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin") {
-     next()
-   } else {
-     req.flash("notice", "You do not have the necessary permissions, please log in.")
-     return res.redirect("/account/login")
-   }
+/* ****************************************
+*  Check Account Type
+* ************************************ */
+Util.checkAccount = (req, res, next) => {
+  if (res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin") {
+    next()
+  } else {
+    req.flash("notice", "You do not have the necessary permissions, please log in.")
+    return res.redirect("/account/login")
   }
+}
+
+
+
+/* **************************************
+ * Build the dropdown classification list
+ * ************************************ */
+Util.buildApproveClassList = async function(){
+  let data = await invModel.getClassificationsToApprove()
+  let dataTable = '<thead>'; 
+  dataTable += '<tr><th>Vehicle Name</th><td>&nbsp;</td></tr>'; 
+  dataTable += '</thead>'; 
+  // Set up the table body 
+  dataTable += '<tbody>'; 
+  // Iterate over all vehicles in the array and put each in a row 
+  data.forEach(function (element) { 
+  //  console.log(element.inv_id + ", " + element.inv_model); 
+  dataTable += `<tr><td>${element.classification_name}</td>`; 
+  dataTable += `<td><a href='/inv/approve/classification/${element.classification_id}' title='Click to Approve'>Approve</a></td>`; 
+  // dataTable += `<td><a href='/inv/delete/classification${element.classification_id}' title='Click to Deny'>Deny</a></td></tr>`; 
+  }) 
+  dataTable += '</tbody>'; 
+  
+  return dataTable
+}
+
+/* **************************************
+ * Build the dropdown Inventory list
+ * ************************************ */
+Util.buildApproveInvList = async function(){
+  let data = await invModel.getInventoryToApprove()
+  let dataTable = '<thead>'; 
+  dataTable += '<tr><th>Vehicle Name</th><th>Classification</th><td>&nbsp;</td></tr>'; 
+  dataTable += '</thead>'; 
+  // Set up the table body 
+  dataTable += '<tbody>'; 
+  // Iterate over all vehicles in the array and put each in a row 
+  data.forEach(function (element) { 
+  //  console.log(element.inv_id + ", " + element.inv_model); 
+  dataTable += `<tr><td>${element.inv_make} ${element.inv_model}</td>`; 
+  dataTable += `<td>${element.classification_name}</td>`; 
+  dataTable += `<td><a href='/inv/approve/inventory/${element.inv_id}' title='Click to Approve'>Approve</a></td>`; 
+  // dataTable += `<td><a href='/inv/delete/inventory${element.inv_id}' title='Click to Deny'>Deny</a></td></tr>`; 
+  }) 
+  dataTable += '</tbody>'; 
+  
+  return dataTable
+}
+
+/* ****************************************
+*  Check Account Type for Admin
+* ************************************ */
+Util.checkAdmin = (req, res, next) => {
+  if (res.locals.accountData.account_type == "Admin") {
+    next()
+  } else {
+    req.flash("notice", "You do not have the necessary permissions, please log in.")
+    return res.redirect("/account/login")
+  }
+}
 
 
 module.exports = Util

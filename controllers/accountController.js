@@ -162,13 +162,7 @@ accountController.updateProfile = async function(req, res) {
       "message",
       `Your information was updated sucessfully.`
     )
-    res.status(201).render("account/landing-page", {
-      title: "You are logged in",
-      nav,
-      errors : null,
-      firstName,
-
-    })
+    res.redirect( "/account/")
   } else {
     req.flash("notice", "Sorry, the update process failed.")
     let firstName = account_firstname 

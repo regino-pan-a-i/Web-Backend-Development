@@ -58,4 +58,16 @@ router.get("/delete/:inv_id",utilities.checkLogin, utilities.checkAccount, utili
 // Route to process the delete
 router.post("/delete/", utilities.handleErrors(invController.deleteInventory));
 
+// Route to error
+router.get("/test", utilities.handleErrors(invController.throwError));
+
+// Route to the approval page
+router.get("/pending", utilities.checkLogin, utilities.checkAdmin, utilities.handleErrors(invController.buildApproval));
+
+// Handle Inventory approval
+router.get("/approve/inventory/:inv_id", utilities.handleErrors(invController.approveInventory));
+
+// Handle Category approval
+router.get("/approve/classification/:classification_id", utilities.handleErrors(invController.approveClassification));
+
 module.exports = router;

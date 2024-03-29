@@ -8,22 +8,31 @@
 
 <%- messages() %>
 
-<div id = "invManagement">
-    <ul>
-        <li><a href="../../inv/add-classification">Create a new Classification</a></li>
-        <li><a href="../../inv/add-inventory">Add a new vehicle</a></li>
-    </ul>
-</div>
+<div id="invManagementContent"> 
 
-<h2>Manage Inventory</h2>
+    <div class="management">
+        <h2>Add new items</h2>
+        <p>Choose to add a new classification or inventory</p>
+        
+        <ul>
+            <li><a href="../../inv/add-classification">Create a new Classification</a></li>
+            <li><a href="../../inv/add-inventory">Add a new vehicle</a></li>
+        </ul>
+    </div>
 
-<p>Select a classification from the list</p>
+    <div id="invManagement" class="management">
+        <h2>Manage Inventory</h2>
+        
+        <p>Select a classification from the list</p>
+        
+        <%- classificationSelect %>
+        
+        <table id="inventoryDisplay" class="displayTable"></table>
+        <noscript>JavaScript must be enabled to use this page.</noscript>
+    </div>
 
-<%- classificationSelect %>
 
-<table id="inventoryDisplay"></table>
-<noscript>JavaScript must be enabled to use this page.</noscript>
-
+</div>    
 
 
 

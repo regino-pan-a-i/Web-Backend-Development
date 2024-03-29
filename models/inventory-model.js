@@ -4,7 +4,11 @@ const pool = require("../database/")
  *  Get all classification data
  * ************************** */
 async function getClassifications(){
-  return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+  return await pool.query(`SELECT * FROM classification AS c
+  JOIN inventory AS i
+  ON c.classification_id = i.classification_id
+  WHERE c.classification_approved = true and inv_approved = true
+  ORDER BY c.classification_name`)
 }
 
 /* ***************************
@@ -16,7 +20,7 @@ async function getInventoryByClassificationId(classification_id) {
       `SELECT * FROM public.inventory AS i 
       JOIN public.classification AS c 
       ON i.classification_id = c.classification_id 
-      WHERE i.classification_id = $1`,
+      WHERE i.classification_id = $1 AND i.inv_approved = true`,
       [classification_id]
     )
     return data.rows
@@ -65,7 +69,11 @@ async function addClassification(classification_name){
 async function getAllClassifications(){
   try {
     const data = await pool.query(
-      `SELECT * FROM classification`
+      `SELECT * FROM classification AS c
+      JOIN inventory AS i
+      ON c.classification_id = i.classification_id
+      WHERE c.classification_approved = true and inv_approved = true
+      ORDER BY c.classification_name`
       )
       return data.rows
     } catch (error) {
@@ -136,6 +144,75 @@ async function deleteInventory(inv_id) {
   }
 }
 
+/* ***************************
+ *  Find classification that need approval
+ * ************************** */
+async function getClassificationsToApprove(){
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.classification WHERE classification_approved = false`
+    )
 
+    return data.rows
+  } catch (error) {
+    console.error("getClassificationsToApprove error " + error)
+  }
+}
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetails, addClassification, getAllClassifications, addInventory, updateInventory, deleteInventory};
+/* ***************************
+ *  Find inventory that need approval
+ * ************************** */
+async function getInventoryToApprove(){
+  try {
+    const data = await pool.query(
+      `SELECT * FROM inventory  AS i
+      JOIN classification AS c
+      ON i.classification_id = c.classification_id
+      WHERE inv_approved = false`
+    )
+
+    return data.rows
+  } catch (error) {
+    console.error("getinventorysToApprove error " + error)
+  }
+}
+
+/* ***************************
+ *  Approve Inventory
+ * ************************** */
+async function approveInventory(inv_id, account_id){
+  try {
+    const data = await pool.query(
+      `UPDATE public.inventory
+      SET inv_approved = true, account_id = $1
+      WHERE inv_id = $2`,
+      [account_id, inv_id]
+    )
+    return data
+  } catch (error) {
+    console.error("approveInventory error " + error)
+  }
+
+}
+
+/* ***************************
+ *  Approve Classification
+ * ************************** */
+async function approveClassification(classification_id, account_id){
+  try {
+    const data = await pool.query(
+      `UPDATE public.classification 
+      SET classification_approved = true, account_id = $1  
+      WHERE classification_id = $2`,
+      [account_id,classification_id]
+    )
+    return data
+  } catch (error) {
+    console.error("approveInventory error " + error)
+  }
+
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetails, 
+  addClassification, getAllClassifications, addInventory, updateInventory, deleteInventory, 
+  getClassificationsToApprove, getInventoryToApprove, approveInventory, approveClassification};
