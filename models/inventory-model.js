@@ -4,7 +4,7 @@ const pool = require("../database/")
  *  Get all classification data
  * ************************** */
 async function getClassifications(){
-  return await pool.query(`SELECT * FROM classification AS c
+  return await pool.query(`SELECT DISTINCT c.* FROM classification AS c
   JOIN inventory AS i
   ON c.classification_id = i.classification_id
   WHERE c.classification_approved = true and inv_approved = true
@@ -69,7 +69,7 @@ async function addClassification(classification_name){
 async function getAllClassifications(){
   try {
     const data = await pool.query(
-      `SELECT * FROM classification AS c
+      `SELECT DISTINCT C.* FROM classification AS c
       JOIN inventory AS i
       ON c.classification_id = i.classification_id
       WHERE c.classification_approved = true and inv_approved = true
