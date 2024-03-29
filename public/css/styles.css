@@ -314,7 +314,8 @@ input:required:focus:valid {
 #invManagementContent {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
+  align-items: center;
   
 }
 .management{
@@ -463,6 +464,7 @@ footer{
   }
 
   #invManagementContent {
+    justify-content: space-evenly;
     flex-direction: row;
     flex-wrap: wrap;
   }
