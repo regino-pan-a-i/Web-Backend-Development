@@ -69,11 +69,7 @@ async function addClassification(classification_name){
 async function getAllClassifications(){
   try {
     const data = await pool.query(
-      `SELECT DISTINCT C.* FROM classification AS c
-      JOIN inventory AS i
-      ON c.classification_id = i.classification_id
-      WHERE c.classification_approved = true and inv_approved = true
-      ORDER BY c.classification_name`
+      `SELECT * FROM classification`
       )
       return data.rows
     } catch (error) {
